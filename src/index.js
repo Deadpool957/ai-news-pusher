@@ -5,12 +5,13 @@ import Parser from 'rss-parser';
 // name: 展示名；url: RSS 地址；limit: 每个源取最新几条
 // ============================================================
 const FEEDS = [
-  { name: '机器之心',       url: 'https://www.jiqizhixin.com/rss', limit: 8 },
-  { name: '量子位',         url: 'https://www.qbitai.com/feed', limit: 8 },
-  { name: 'HuggingFace',    url: 'https://huggingface.co/blog/feed.xml', limit: 5 },
-  { name: 'GitHub Trending',url: 'https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml', limit: 8 },
-  { name: 'arXiv cs.CL',    url: 'https://rss.arxiv.org/rss/cs.CL', limit: 8 },
-  { name: 'OpenAI Blog',    url: 'https://openai.com/blog/rss.xml', limit: 5 },
+  { name: '巨潮资讯',     url: 'https://www.cninfo.com.cn/new/disclosure/stock?rss=latest', limit: 10 },
+  { name: '东方财富-财报', url: 'https://finance.eastmoney.com/rss/', limit: 10 },
+  { name: '雪球',         url: 'https://xueqiu.com/hots/topic/rss', limit: 8 },
+  { name: '华尔街见闻',    url: 'https://wallstreetcn.com/feed', limit: 8 },
+  { name: '财新公司',     url: 'https://www.caixin.com/rss/company.xml', limit: 8 },
+  { name: '第一财经公司',  url: 'https://www.yicai.com/rss/company.xml', limit: 8 },
+  { name: '新浪财经',     url: 'https://rss.sina.com.cn/finance/stock/', limit: 8 },
 ];
 
 // 筛选阈值：LLM 打分 >= 这个值才推送
@@ -75,15 +76,15 @@ async function llmFilter(items) {
 
   const payload = items.map((it, i) => `${i + 1}. [${it.source}] ${it.title} | ${it.link}`).join('\n');
 
-  const systemPrompt = `你是一个资深 AI 技术编辑。用户是一名前端工程师，关注：LLM 工程化、Agent、开源模型发布、开发者工具、推理/训练框架、前端 AI 集成。
-你的任务：从给定资讯列表中筛出对他有价值的，打分(0-10)，并给一句话中文摘要。
+  const systemPrompt = `你是一个资深财经编辑，重点关注上市公司财报、业绩预告、重大公告。
+你的任务：从给定资讯列表中筛出与公司财报、业绩、重大经营事项相关的，打分(0-10)，并给一句话中文摘要。
 只输出 JSON 数组，不要任何额外解释。每项字段：
 {
   "title": "原标题",
   "link": "原链接",
   "source": "原来源",
   "score": 数字,
-  "category": "模型发布|工程工具|行业动态|论文|开源项目",
+  "category": "业绩财报|业绩预告|重大公告|分红送转|并购重组|公司动态",
   "summary": "一句话中文摘要，不超过50字"
 }
 只保留 score >= ${SCORE_THRESHOLD} 的，最多 ${MAX_PUSH} 条，按 score 从高到低排。`;
