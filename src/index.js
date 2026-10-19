@@ -60,6 +60,7 @@ function dedup(items) {
 // 3. 调 LLM 筛选 + 摘要（OpenAI 兼容协议）
 // ============================================================
 async function llmFilter(items) {
+  console.log(items,'items项')
   const apiKey = process.env.LLM_API_KEY;
   const baseUrl = (process.env.LLM_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
   const model = process.env.LLM_MODEL || 'gpt-4o-mini';
@@ -102,7 +103,7 @@ async function llmFilter(items) {
       ],
     }),
   });
-
+  console.log(resq,'resq')
   if (!resp.ok) {
     const text = await resp.text();
     throw new Error(`LLM 请求失败 ${resp.status}: ${text.slice(0, 300)}`);
