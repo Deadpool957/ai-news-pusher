@@ -60,7 +60,7 @@ function dedup(items) {
 // 3. 调 LLM 筛选 + 摘要（OpenAI 兼容协议）
 // ============================================================
 async function llmFilter(items) {
-  const apiKey = 'https://open.feishu.cn/open-apis/bot/v2/hook/492a0f50-c1c6-441a-9734-01504a655981';
+  const apiKey = process.env.LLM_API_KEY;
   const baseUrl = (process.env.LLM_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
   const model = process.env.LLM_MODEL || 'gpt-4o-mini';
 
