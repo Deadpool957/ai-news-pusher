@@ -1,0 +1,12 @@
+{
+  "name": "ai-news-pusher",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "rss-parser": "^3.13.0"
+  }
+}
