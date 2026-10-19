@@ -129,8 +129,11 @@ async function pushToFeishu(newsList) {
 
   const today = new Date().toLocaleDateString('zh-CN', {
     year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
   });
-
   if (!newsList.length) {
     newsList = [{ title: '今天没有筛到值得看的资讯', link: '', source: '', summary: '', category: '', score: 0 }];
   }
@@ -194,4 +197,3 @@ main().catch((e) => {
   console.error('[fatal]', e);
   process.exit(1);
 });
-//export FEISHU_WEBHOOK="https://open.feishu.cn/open-apis/bot/v2/hook/492a0f50-c1c6-441a-9734-01504a655981"
